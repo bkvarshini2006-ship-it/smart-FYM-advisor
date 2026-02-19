@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart FYM Advisor</title>
+
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(#e8f5e9,#c8e6c9);
+  text-align:center;
+}
+
+.header{
+  background:#1b5e20;
+  color:white;
+  padding:15px;
+}
+
+.logo{
+  font-size:26px;
+  font-weight:bold;
+}
+
+.container{
+  background:white;
+  width:480px;
+  margin:25px auto;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 0 18px rgba(0,0,0,0.2);
+}
+
+select,input{
+  width:92%;
+  padding:8px;
+  margin:6px;
+}
+
+button{
+  background:#1b5e20;
+  color:white;
+  padding:12px;
+  border:none;
+  width:95%;
+  margin-top:8px;
+  font-size:16px;
+  border-radius:6px;
+}
+
+.result{
+  margin-top:15px;
+  background:#f1f8e9;
+  padding:12px;
+  text-align:left;
+  border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">🌱 Smart FYM Advisor</div>
+  <div>AI-Based Organic Manure Management</div>
+</div>
+
+<div class="container">
+
+<h2 id="title">AI Multi-Nutrient FYM Advisor</h2>
+
+<button onclick="setLang('en')">English</button>
+<button onclick="setLang('ta')">தமிழ்</button>
+
+<br><br>
+
+<label id="areaLbl">Area (ha)</label>
+<input type="number" id="area">
+
+<label id="nLbl">Soil Nitrogen</label>
+<select id="N">
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+</select>
+
+<label id="pLbl">Soil Phosphorus</label>
+<select id="P">
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+</select>
+
+<label id="kLbl">Soil Potassium</label>
+<select id="K">
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+</select>
+
+<label id="microLbl">Micronutrient Status</label>
+<select id="micro">
+<option>Deficient</option>
+<option>Adequate</option>
+</select>
+
+<label id="probLbl">Soil Problem</label>
+<select id="problem">
+<option>None</option>
+<option>Disease-prone</option>
+<option>Low organic carbon</option>
+</select>
+
+<button onclick="calc()">Get Recommendation</button>
+<button onclick="startVoice()">🎤 Voice Input</button>
+
+<div class="result" id="out"></div>
+
+</div>
+
+<script>
+
+/* 🌐 Language switch */
+function setLang(lang){
+
+if(lang=="ta"){
+document.getElementById("title").innerHTML="பல ஊட்டச்சத்து FYM ஆலோசகர்";
+document.getElementById("areaLbl").innerHTML="பரப்பளவு (ஹெக்டேர்)";
+document.getElementById("nLbl").innerHTML="மண்ணின் நைட்ரஜன்";
+document.getElementById("pLbl").innerHTML="மண்ணின் பாஸ்பரஸ்";
+document.getElementById("kLbl").innerHTML="மண்ணின் பொட்டாசியம்";
+document.getElementById("microLbl").innerHTML="சிறு ஊட்டச்சத்து நிலை";
+document.getElementById("probLbl").innerHTML="மண் பிரச்சனை";
+}
+else{
+document.getElementById("title").innerHTML="AI Multi-Nutrient FYM Advisor";
+document.getElementById("areaLbl").innerHTML="Area (ha)";
+document.getElementById("nLbl").innerHTML="Soil Nitrogen";
+document.getElementById("pLbl").innerHTML="Soil Phosphorus";
+document.getElementById("kLbl").innerHTML="Soil Potassium";
+document.getElementById("microLbl").innerHTML="Micronutrient Status";
+document.getElementById("probLbl").innerHTML="Soil Problem";
+}
+
+}
+
+/* 🤖 Recommendation logic */
+
+function calc(){
+
+let area=document.getElementById("area").value;
+let N=document.getElementById("N").value;
+let P=document.getElementById("P").value;
+let K=document.getElementById("K").value;
+let micro=document.getElementById("micro").value;
+let problem=document.getElementById("problem").value;
+
+let enrich=[];
+
+if(N=="Low") enrich.push("Azotobacter + Neem cake");
+if(P=="Low") enrich.push("Rock phosphate + PSB");
+if(K=="Low") enrich.push("Wood ash + Potash mobilizers");
+if(micro=="Deficient") enrich.push("Micronutrient mixture / Seaweed");
+if(problem=="Disease-prone") enrich.push("Trichoderma + Pseudomonas");
+if(problem=="Low organic carbon") enrich.push("Biochar enrichment");
+
+let required = area * 12;
+
+document.getElementById("out").innerHTML =
+"<b>Required FYM:</b> "+required+" tons<br><br>" +
+"<b>Recommended Enrichment:</b><br>• " +
+enrich.join("<br>• ");
+
+}
+
+/* 🎤 Voice input (English only) */
+
+function startVoice(){
+
+let rec = new(window.SpeechRecognition || window.webkitSpeechRecognition)();
+rec.lang = "en-IN";
+
+rec.onresult = function(e){
+let text = e.results[0][0].transcript;
+alert("You said: " + text);
+};
+
+rec.start();
+
+}
+
+</script>
+
+</body>
+</html>
